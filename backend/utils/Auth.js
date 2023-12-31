@@ -8,6 +8,7 @@ const { SECRET } = require("../config");
  * @DESC To register the user (ADMIN, SUPER_ADMIN, USER)
  */
 const userRegister = async (userDets, role, res) => {
+
   try {
     // Validate the username
     let usernameNotTaken = await validateUsername(userDets.username);
@@ -27,9 +28,12 @@ const userRegister = async (userDets, role, res) => {
       });
     }
 
-    // Get the hashed password
-    const password = await bcrypt.hash(userDets.password, 12);
-    // create a new user
+    const saltRounds = 14; // You can adjust this based on your security requirements
+
+// Assuming userDets and role are already defined
+const password = await bcrypt.hash(userDets.password, saltRounds);
+
+ 
     const newUser = new User({
       ...userDets,
       password,
@@ -42,6 +46,7 @@ const userRegister = async (userDets, role, res) => {
       success: true
     });
   } catch (err) {
+    console.log(err)
     // Implement logger function (winston)
     return res.status(500).json({
       message: "Unable to create your account.",

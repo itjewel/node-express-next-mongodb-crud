@@ -10,6 +10,7 @@ const {
 
 // Users Registeration Route
 router.post("/register-user", async (req, res) => {
+
   await userRegister(req.body, "user", res);
 });
 

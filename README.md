@@ -5,5 +5,5 @@ node-express-next-mongodb-crud
 
 ```bash
    npm i
-   npm run start
+   npm run dev
 ```
