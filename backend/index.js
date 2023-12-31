@@ -6,7 +6,7 @@ const { connect } = require("mongoose");
 const { success, error } = require("consola");
 
 // Bring in the app constants
-const { DB, PORT } = require("./config");
+const { DB,PORT } = require("./config");
 
 // Initialize the application
 const app = exp();
@@ -25,7 +25,6 @@ const startApp = async () => {
   try {
     // Connection With DB
     await connect(DB, {
-      useFindAndModify: true,
       useUnifiedTopology: true,
       useNewUrlParser: true
     });
