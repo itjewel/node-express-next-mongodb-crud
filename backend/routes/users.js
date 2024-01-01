@@ -9,34 +9,34 @@ const {
 } = require("../utils/Auth");
 
 // Users Registeration Route
-router.post("/register-user", async (req, res) => {
+router.post("/register-employee", async (req, res) => {
 
-  await userRegister(req.body, "user", res);
+  await userRegister(req.body, "employee", res);
 });
 
 // Admin Registration Route
-router.post("/register-admin", async (req, res) => {
-  await userRegister(req.body, "admin", res);
+router.post("/register-supervisor", async (req, res) => {
+  await userRegister(req.body, "supervisor", res);
 });
 
 // Super Admin Registration Route
-router.post("/register-super-admin", async (req, res) => {
-  await userRegister(req.body, "superadmin", res);
+router.post("/register-administrator", async (req, res) => {
+  await userRegister(req.body, "administrator", res);
 });
 
 // Users Login Route
-router.post("/login-user", async (req, res) => {
-  await userLogin(req.body, "user", res);
+router.post("/login-employee", async (req, res) => {
+  await userLogin(req.body, "employee", res);
 });
 
 // Admin Login Route
-router.post("/login-admin", async (req, res) => {
-  await userLogin(req.body, "admin", res);
+router.post("/login-supervisor", async (req, res) => {
+  await userLogin(req.body, "supervisor", res);
 });
 
 // Super Admin Login Route
-router.post("/login-super-admin", async (req, res) => {
-  await userLogin(req.body, "superadmin", res);
+router.post("/login-administrator", async (req, res) => {
+  await userLogin(req.body, "administrator", res);
 });
 
 // Profile Route
@@ -46,41 +46,41 @@ router.get("/profile", userAuth, async (req, res) => {
 
 // Users Protected Route
 router.get(
-  "/user-protectd",
+  "/employee-protectd",
   userAuth,
-  checkRole(["user"]),
+  checkRole(["employee"]),
   async (req, res) => {
-    return res.json("Hello User");
+    return res.json("Hello employee");
   }
 );
 
-// Admin Protected Route
+// Supervisor Protected Route
 router.get(
-  "/admin-protectd",
+  "/supervisor-protectd",
   userAuth,
-  checkRole(["admin"]),
+  checkRole(["supervisor"]),
   async (req, res) => {
-    return res.json("Hello Admin");
+    return res.json("Hello supervisor");
+  }
+);
+
+// Administrator Protected Route
+router.get(
+  "/administrator-protectd",
+  userAuth,
+  checkRole(["administrator"]),
+  async (req, res) => {
+    return res.json("Hello Administrator");
   }
 );
 
 // Super Admin Protected Route
 router.get(
-  "/super-admin-protectd",
+  "/administrator-and-supervisor-protectd",
   userAuth,
-  checkRole(["superadmin"]),
+  checkRole(["administrator", "supervisor"]),
   async (req, res) => {
-    return res.json("Hello Super Admin");
-  }
-);
-
-// Super Admin Protected Route
-router.get(
-  "/super-admin-and-admin-protectd",
-  userAuth,
-  checkRole(["superadmin", "admin"]),
-  async (req, res) => {
-    return res.json("Super admin and Admin");
+    return res.json("Administrator and Supervisor");
   }
 );
 
