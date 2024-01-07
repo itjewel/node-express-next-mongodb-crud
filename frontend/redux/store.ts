@@ -1,15 +1,22 @@
-import { configureStore } from '@reduxjs/toolkit'
-import { setupListeners } from '@reduxjs/toolkit/query'
-import { todosSlice } from './features/todos/todosSlice'
-import { productsAPI } from './features/products/productsSlice'
+// app/store.js
+import { configureStore } from '@reduxjs/toolkit';
+import { api } from './features/auth/apiSlice';
+import authSlice from './features/auth/authSlice';
+import { setupListeners } from '@reduxjs/toolkit/query';
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
-    [todosSlice.reducerPath]: todosSlice.reducer,
-    [productsAPI.reducerPath]: productsAPI.reducer,
+    auth: authSlice,
+    [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(todosSlice.middleware, productsAPI.middleware),
-})
+    getDefaultMiddleware().concat(api.middleware),
+});
 
 setupListeners(store.dispatch);
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
+
+export default store;
+

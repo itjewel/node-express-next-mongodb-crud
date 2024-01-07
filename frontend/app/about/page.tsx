@@ -17,6 +17,7 @@ const HomePage = () => {
 
   return (
     <div>
+      <h1>hi there</h1>
       {/* Render your component content using todosData and productsData */}
     </div>
   );
