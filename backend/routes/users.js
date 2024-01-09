@@ -40,6 +40,10 @@ router.post("/login-administrator", async (req, res) => {
 });
 
 // Profile Route
+router.get("/check-auth", userAuth, async (req, res) => {
+  return res.json(serializeUser(req.user));
+});
+
 router.get("/profile", userAuth, async (req, res) => {
   return res.json(serializeUser(req.user));
 });

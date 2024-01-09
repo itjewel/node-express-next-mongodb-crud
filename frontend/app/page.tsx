@@ -1,19 +1,15 @@
 'use client'
 // ./app/page.tsx
-import React, { useEffect } from 'react';
-import { useGetTodosQuery } from '@/redux/features/todos/todosSlice';
-import { useGetProductByNameQuery } from '@/redux/features/products/productsSlice';
 
+import React, { useEffect } from 'react';
+import { useSelector } from "react-redux";
+import { selectToken,selectRoles  } from "@/redux/features/auth/authSlice";
 /* use client */
 const Page: React.FC = () => {
-  const { data: todosData } = useGetTodosQuery('');
-  const { data: productsData } = useGetProductByNameQuery('');
 
-  useEffect(() => {
-    // Your component logic using the fetched data
-    console.log('Todos:', todosData);
-    console.log('Products:', productsData);
-  }, [todosData, productsData]);
+  const checkToken = useSelector(selectToken);
+  const checkRoles = useSelector(selectRoles);
+  console.log({checkToken, checkRoles});
 
   return (
     <div>

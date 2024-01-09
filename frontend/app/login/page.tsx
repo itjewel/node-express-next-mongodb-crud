@@ -1,24 +1,39 @@
 'use client'
 // components/LoginForm.js
-import { useLoginMutation } from "@/redux/features/auth/apiSlice";
+import { useLoginMutation, useCheckAuthQuery  } from "@/redux/features/auth/apiSlice";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setToken, setRoles, selectToken,selectRoles  } from "@/redux/features/auth/authSlice";
+import { FormEvent } from "react";
 const LoginForm = () => {
-  const token = useSelector((state) => state.auth.token);
-  
-  // const userRoles = useSelector((state) => state.auth.user.role);
-
+  const dispatch = useDispatch();
   const [login, { isLoading }] = useLoginMutation();
+  const checkToken: string | undefined = useSelector(selectToken);
+  const checkRoles: string | undefined = useSelector(selectRoles);
+  
+  const { data: authData, isError, isLoading: loadingData } = useCheckAuthQuery(checkToken);
+  if(!loadingData && authData && !isError){
+    // console.log
+    console.log({authData, isError});
+  }
+    
 
   const handleLogin = async (credentials: { username: any; password: any; }) => {
     try {
-      await login(credentials);
+      const response =  await login(credentials);
+      if ('data' in response) {
+        const { role, token } = response.data;
+        dispatch(setRoles(role));
+        dispatch(setToken(token));
+      }
+   
       // Handle successful login (actions dispatched by RTK Query)
     } catch (error) {
       // Handle login error
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const credentials = {
       username: e.target.username.value,
