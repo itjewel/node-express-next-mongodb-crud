@@ -1,4 +1,5 @@
 # Project Structure
+```bash
 /frontend
    /app
    /components
@@ -12,6 +13,7 @@
    /models
    /routes
    /utils
+```
 
 # node-express-next-mongodb-crud
 node-express-next-mongodb-crud
