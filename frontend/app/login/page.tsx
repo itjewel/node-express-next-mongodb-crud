@@ -4,8 +4,10 @@ import { useLoginMutation, useCheckAuthQuery  } from "@/redux/features/auth/apiS
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setToken, setRoles, selectToken,selectRoles  } from "@/redux/features/auth/authSlice";
+// import { useRouter } from 'next/router';
 import { FormEvent } from "react";
 const LoginForm = () => {
+ // const router = useRouter();
   const dispatch = useDispatch();
   const [login, { isLoading }] = useLoginMutation();
   const checkToken: string | undefined = useSelector(selectToken);
@@ -13,6 +15,27 @@ const LoginForm = () => {
   
   const { data: authData, isError, isLoading: loadingData } = useCheckAuthQuery(checkToken);
   if(!loadingData && authData && !isError){
+    switch (checkRoles) {
+      case 'employee':
+        console.log('employee')
+        // Redirect to employee page
+      //  router.push('/admin/employee-page');
+        break;
+      case 'supervisor':
+        console.log('supervisor')
+        // Redirect to supervisor page
+       // router.push('/admin/supervisor-page');
+        break;
+      case 'administrator':
+        console.log('administrator')
+        // Redirect to administrator page
+       // router.push('/admin/administrator-page');
+        break;
+      default:
+        console.log('error');
+        // Redirect to an error page or a default page
+       // router.push('/error-page');
+    }
     // console.log
     console.log({authData, isError});
   }
