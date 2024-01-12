@@ -13,17 +13,16 @@ export const api = createApi({
     baseUrl,
     prepareHeaders: (headers, { getState }) => {
       const token = Cookies.get('token'); // Retrieve the token from the cookie
-     // const roles = selectRoles(getState()); // Optionally retrieve roles if needed
-
-      // Set the Authorization header if a token is available
+    
       if (token) {
         headers.set('Authorization', `${token}`);
       }
-
-      // You can include additional headers or logic here if needed
-
       return headers;
     },
+     // onQueryStarted callback for redirection
+   // onQueryStarted callback for redirection
+   
+
   }),
   endpoints: (builder) => ({
     // Assuming this is part of your RTK Query setup
@@ -56,7 +55,6 @@ export const api = createApi({
     checkAuth: builder.query<any, string>({
       query: (token) => `check-auth`,
     }),
-
     // Add other endpoints if needed
   }),
 });
