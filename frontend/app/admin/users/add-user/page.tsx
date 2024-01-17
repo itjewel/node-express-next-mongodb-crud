@@ -1,15 +1,17 @@
 'use client'
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { useCheckAuthQuery  } from "@/redux/features/auth/apiSlice";
-import { selectToken,selectRoles  } from "@/redux/features/auth/authSlice";
+import { useCreatUserMutation } from "@/redux/features/users/usersSlice";
+import { selectToken,selectRoles,setRoles,setToken  } from "@/redux/features/auth/authSlice";
 import { useRouter } from 'next/navigation';
-import { useEffect } from "react";
+import { FormEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Link from "next/link";
 
 
 const Users = () => {
+  const [createUser,{isLoading: createLoading}] = useCreatUserMutation();
 const router = useRouter();
 const authState = useSelector((state: RootState) => state);
 const checkToken: string | undefined  = selectToken(authState);
@@ -23,6 +25,33 @@ useEffect(() => {
     router.push('/login');
   }
 }, [ authData, isError,router]);
+
+const handleCreateUser = async (req: []) => {
+  try {
+    const response =  await createUser(req);
+    console.log(response)
+    if ('data' in response) {
+      const { message } = response.data;
+     // console.log(message)
+    }
+ 
+    // Handle successful login (actions dispatched by RTK Query)
+  } catch (error) {
+    // Handle login error
+  }
+};
+
+const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  const userData = {
+    name: e.target.name.value,
+    username: e.target.username.value,
+    password: e.target.password.value,
+    email: e.target.email.value,
+    role: e.target.role.value,
+  };
+  handleCreateUser(userData);
+};
 
 
 return (
@@ -59,7 +88,7 @@ return (
         <div className="grid ">
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
              
-                <form action="#">
+            <form className="mt-8 space-y-6" onSubmit={(e) => handleSubmit(e)}>
               <div className="p-6.5">
 
 
@@ -80,7 +109,7 @@ return (
                         <label className="mb-2.5 block text-black dark:text-white">
                             Username
                         </label>
-                        <input
+                        <input name="username"
                             type="text"
                             placeholder="Enter your username"
                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
@@ -93,7 +122,7 @@ return (
                         </label>
                         <input
                             type="password"
-                            placeholder="Enter your password"
+                            placeholder="Enter your password" name="password"
                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                         />
                     </div>
@@ -106,7 +135,7 @@ return (
                         </label>
                         <input
                             type="email"
-                            placeholder="Enter your email address"
+                            placeholder="Enter your email address" name="email"
                             className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                         />
                     </div>
@@ -116,7 +145,7 @@ return (
                         Choose Roles
                     </label>
                     <div className="relative z-20 bg-transparent dark:bg-form-input">
-                        <select className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
+                        <select name="role" className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary">
                             <option value="employee">Employee</option>
                             <option value="supervisor">Supervisor</option>
                             <option value="administrator">Administrator</option>
