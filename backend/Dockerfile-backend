@@ -13,8 +13,8 @@ RUN npm install
 # Copy the local source files to the container
 COPY ./backend .
 
-# Expose the port that Express will run on
+# Expose the port that Express.js will run on
 EXPOSE 5000
 
-# Start the Express app
+# Start the Express.js app
 CMD ["npm", "start"]
