@@ -1,0 +1,26 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile-backend
+    ports:
+      - "5000:5000"
+    environment:
+      MONGODB_URI: "mongodb://localhost:27017/node-express-next-mongodb-crud"
+    depends_on:
+      - mongo
+
+  mongo:
+    image: "mongo:latest"
+    ports:
+      - "27017:27017"
